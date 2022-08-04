@@ -27,6 +27,7 @@ interface UserTypes {
   email: string;
   cpf: string;
   birthdate: string;
+  password: string;
 }
 
 interface AccountTypes {
@@ -44,12 +45,7 @@ interface UserProviderTypes {
 }
 
 export const UserProvider = ({ children }: UserProviderTypes) => {
-  const [user, setUser] = useState<UserTypes>({
-    name: 'string',
-    email: 'string',
-    cpf: 'string',
-    birthdate: 'string'
-  });
+  const [user, setUser] = useState<UserTypes>();
   const [loading, setLoading] = useState(true);
   const [account, setAccount] = useState<AccountTypes>({
     accountNumber: 0,
@@ -69,7 +65,7 @@ export const UserProvider = ({ children }: UserProviderTypes) => {
 
   const signup = async ({name, email, cpf, birthdate, password}: SignUpTypes) => {
     const body = {
-      name: name,
+      name,
       email: email,
       cpf: cpf,
       birthdate: birthdate,
@@ -79,8 +75,8 @@ export const UserProvider = ({ children }: UserProviderTypes) => {
     try {
       const response = await api.post('/accounts', body);
       if (response.data) {
-        setUser({name, email, cpf, birthdate});
-        localStorage.setItem('user', JSON.stringify({name, email, cpf, birthdate}));
+        setUser({name, email, cpf, birthdate, password});
+        //localStorage.setItem('user', JSON.stringify({name, email, cpf, birthdate, password}));
         setAccount(response.data.data);
       }
       // console.log(account);
@@ -90,13 +86,14 @@ export const UserProvider = ({ children }: UserProviderTypes) => {
 
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     const getUser = localStorage.getItem('user');
     console.log(getUser);
     if (getUser && getUser !== null) {
       const loggedUser = JSON.parse(getUser);
+      // setUser(loggedUser);
     }
-  }, []);
+  }, []); */
 
   return (
     <UserContext.Provider

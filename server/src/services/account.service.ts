@@ -31,23 +31,18 @@ class AccountService {
   public async create(user: User): Promise<APIResponse> {
     const thisUser = await new this.usersTable().find(user)
     const account: Account = generateAccount("", 0.0, "")
-    bcrypt.hash(user.password, 10, async (errBcrypt, hash) => {
-      if (errBcrypt) {
-          return { error: errBcrypt };
-      } else {
-        if (thisUser) {
-          account.password = hash
-          account.userId = thisUser.id
-          await new this.accountsTable().insert(account)
-        } else {
-          console.log("Antes de entrar no service")
-          const newUser = await this.users.create(user)
-          account.password = hash
-          account.userId = newUser.data.id
-          await new this.accountsTable().insert(account)
-        }
-      }
-    })
+    const encryptedPassword = await bcrypt.hash(user.password, 10);
+    if (thisUser) {
+      account.password = encryptedPassword
+      account.userId = thisUser.id
+      await new this.accountsTable().insert(account)
+    } else {
+      console.log("Antes de entrar no service")
+      const newUser = await this.users.create(user)
+      account.password = encryptedPassword
+      account.userId = newUser.data.id
+      await new this.accountsTable().insert(account)
+    }
 
     const info = {
       agencyNumber: account.agencyNumber,

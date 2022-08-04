@@ -22,14 +22,14 @@ class ExtractService {
     })
 
     const passwordIsEqual = await bcrypt.compare(extract.password, account.password)
-
-    //console.log("Result: ", passwordIsEqual)
+    
+    console.log("Result: ", passwordIsEqual)
     
     const fee = 1
     
     if (passwordIsEqual) {
       account.balance -= fee
-      let check = await this.prisma.account.update({
+      await this.prisma.account.update({
         where: { id: account.id },
         data: account,
       })

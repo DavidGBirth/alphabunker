@@ -7,7 +7,10 @@ import Accounts from './routes/accounts'
 import Transactions from './routes/transactions'
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+}));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

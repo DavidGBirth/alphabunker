@@ -5,6 +5,7 @@ interface PropTypes {
   color?: string
   type: 'text' | 'password' | 'email' | 'date'
   onBlur?: FocusEventHandler<HTMLInputElement>
+  value: string
 }
 
 export const Input = ({
@@ -12,6 +13,7 @@ export const Input = ({
   color,
   type,
   onBlur,
+  value
 }: PropTypes) => {
   return (
     <input
@@ -19,6 +21,7 @@ export const Input = ({
       color={color}
       placeholder={placeholder}
       onBlur={onBlur}
+      value={value}
     />
   );
 };

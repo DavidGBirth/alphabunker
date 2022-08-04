@@ -29,8 +29,8 @@ const Private = ({ children }: ChildrenTypes) => {
 const Public = ({ children }: ChildrenTypes) => {
   const { user } = useUser();
 
-  if (!user) {
-    return <Navigate to="/login" />;
+  if (user) {
+    return <Navigate to="/extract" />;
   }
 
   return children;
@@ -38,7 +38,7 @@ const Public = ({ children }: ChildrenTypes) => {
 
 export const Router = () => (
   <Routes>
-    <Route path="/" element={<Navigate to="/home" />} />
+    <Route path="/" element={<Navigate to="/register" />} />
     <Route
       path="/home"
       element={
