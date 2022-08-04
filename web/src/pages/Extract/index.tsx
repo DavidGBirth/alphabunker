@@ -9,7 +9,7 @@
  */
 
 import { Bank, Bell } from 'phosphor-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Header } from '../../components/Header';
 import { api } from '../../libs/api';
 import { useUser } from '../../providers/UserProvider';
@@ -37,6 +37,9 @@ interface ResponseAPI {
 
 export const Extract = () => {
   const { user, account } = useUser();
+  const [deposit, setDeposit] = useState<number>();
+  const [transfer, setTransfer] = useState<number>();
+  const [withdraw, setWithdraw] = useState<number>();
 
   async function getExtract() {
     try {
@@ -47,10 +50,44 @@ export const Extract = () => {
         accountNumber: account?.accountNumber,
         accountVerificationCode: account?.accountVerificationCode,
       });
-      console.log(data);
+      data.data.forEach((item) => {
+        if (item.type === 'deposit') {
+          if (deposit) {
+            const newDeposit = deposit + item.value + item.fee;
+            setDeposit(newDeposit);
+          } else {
+            const newDeposit = item.value + item.fee;
+            setDeposit(newDeposit);
+          }
+        }
+        if (item.type === 'withdraw') {
+          if (withdraw) {
+            const newWithdraw = withdraw + item.value + item.fee;
+            setWithdraw(newWithdraw);
+          } else {
+            const newWithdraw = item.value + item.fee;
+            setWithdraw(newWithdraw);
+          }
+        }
+        if (item.type === 'transfer') {
+          if (transfer) {
+            const newTransfer = transfer + item.value + item.fee;
+            setTransfer(newTransfer);
+          } else {
+            const newTransfer = item.value + item.fee;
+            setTransfer(newTransfer);
+          }
+        }
+      });
+      console.log(deposit, transfer, withdraw);
     } catch (error: any) {
       console.log(error.response.data);
     }
+  }
+
+  function moneyTransform(number: number | undefined) {
+    const string = number?.toFixed(2).toString().replace('.', ',');
+    return string;
   }
 
   useEffect(() => {
@@ -82,33 +119,25 @@ export const Extract = () => {
             <div className="px-1">
               <div className="flex flex-row justify-between">
                 <p>Transferência enviada</p>
-                <p className="text-input-error font-bold">- R$26,49</p>
+                <p className="text-input-error font-bold">
+                  - R${transfer ? moneyTransform(transfer) : '0,00'}
+                </p>
               </div>
               <div className="flex flex-row justify-between">
                 <p>Saque</p>
-                <p className="text-input-error font-bold">- R$515,00</p>
+                <p className="text-input-error font-bold">
+                  - R${withdraw ? moneyTransform(withdraw) : '0,00'}
+                </p>
               </div>
               <div className="flex flex-row justify-between">
                 <p>Depósito</p>
-                <p className="text-input-positive font-bold">+ R$1.500,00</p>
+                <p className="text-input-positive font-bold">
+                  + R${deposit ? moneyTransform(deposit) : '0,00'}
+                </p>
               </div>
               <div className="flex flex-row justify-between">
                 <p>Transferência recebida</p>
-                <p className="text-input-positive font-bold">+ R$630,00</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-5">
-            <p className="text-paragraph-light-200">02/07/2022</p>
-            <div className="px-1">
-              <div className="flex flex-row justify-between">
-                <p>Transferência enviada</p>
-                <p className="text-input-error font-bold">- R$218,27</p>
-              </div>
-              <div className="flex flex-row justify-between">
-                <p>Depósito</p>
-                <p className="text-input-positive font-bold">+ R$915,00</p>
+                <p className="text-input-positive font-bold">+ R$0,00</p>
               </div>
             </div>
           </div>
