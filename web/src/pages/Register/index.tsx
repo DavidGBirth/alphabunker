@@ -10,25 +10,13 @@ export const Register = () => {
 
   const navigate = useNavigate();
 
-  const [name, setName] = useState('David');
+  const [name, setName] = useState('');
   const [account, setAccount] = useState('');
-  const [birthdate, setBirthdate] = useState('1997-10-10');
-  const [cpf, setCpf] = useState('01234567890');
-  const [email, setEmail] = useState('david@gmail.com');
-  const [password, setPassword] = useState('abcdef');
-  const [confirmPassword, setConfirmPassword] = useState('abcdef');
-
-  const handleSubmit = async () => {
-    if (signup) {
-      signup({
-        name: name,
-        email: email,
-        cpf: cpf,
-        birthdate: birthdate,
-        password: password,
-      });
-      navigate('/extract');
-    }
+  const [birthdate, setBirthdate] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const comparePassword = () => {
     if (password === confirmPassword) {
@@ -41,48 +29,54 @@ export const Register = () => {
   const handleSubmit = async () => {
     if (comparePassword()) {
       if (signup) {
-        signup({name: name, email: email, cpf: cpf, birthdate: birthdate, password: password});
+        signup({
+          name: name,
+          email: email,
+          cpf: cpf,
+          birthdate: birthdate,
+          password: password,
+        });
         navigate('/extract');
       }
     }
   };
 
-
-
   return (
-    <div className="bg-body-light-200 flex flex-col justify-center items-center w-screen h-screen gap-10">
+    <div className="bg-body-light-200 flex flex-col justify-center items-center w-screen h-screen gap-5">
       <img className="w-50 h-50" src={logo} alt="" />
       <h1 className="font-brand-base text-brand-base">Alpha Bunker</h1>
-      <h2 className="font-brand-base text-body-light-100">Crie sua Conta</h2>
+      <h2 className="font-brand-base dark:text-paragraph-dark text-body-light-100">
+        Crie sua Conta
+      </h2>
       <Input
         type="text"
         placeholder="Digite seu Nome"
         onBlur={(e) => setName(e.target.value)}
-        value={'David'}
       />
       <Input
         type="date"
         placeholder="Digite sua data de nascimento"
         onBlur={(e) => setBirthdate(e.target.value)}
-        value={'1997-10-10'}
       />
       <Input
         type="text"
         placeholder="Digite seu CPF"
         onBlur={(e) => setCpf(e.target.value)}
-        value={'01234567890'}
       />
       <Input
         type="email"
         placeholder="Digite seu Email"
         onBlur={(e) => setEmail(e.target.value)}
-        value={'david@gmail.com'}
       />
       <Input
         type="password"
         placeholder="Digite sua senha"
         onBlur={(e) => setPassword(e.target.value)}
-        value={'abcdef'}
+      />
+      <Input
+        type="password"
+        placeholder="Digite sua senha novamente"
+        onBlur={(e) => setConfirmPassword(e.target.value)}
       />
       <Button
         type="button"
