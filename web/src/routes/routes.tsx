@@ -107,6 +107,10 @@ export const Router = () => (
       path="/transaction/:type/:date/:value/:balance"
       element={<Transaction />}
     />
+    <Route
+      path="/transaction/:type/:date/:value/:balance/:targetUser/:agency/:newAccount"
+      element={<Transaction />}
+    />
 
     <Route path="*" element={<h1 className="text-white">Error 404</h1>} />
   </Routes>

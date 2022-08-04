@@ -18,7 +18,7 @@ export const Register = () => {
   const [password, setPassword] = useState('abcdef');
   const [confirmPassword, setConfirmPassword] = useState('abcdef');
 
-  const handleSubmit = async () => {
+  /* const handleSubmit = async () => {
     if (signup) {
       signup({
         name: name,
@@ -29,6 +29,7 @@ export const Register = () => {
       });
       navigate('/extract');
     }
+  }; */
 
   const comparePassword = () => {
     if (password === confirmPassword) {
@@ -93,4 +94,5 @@ export const Register = () => {
       <p onClick={() => navigate('/login')}>Crie sua conta</p>
     </div>
   );
+
 };

@@ -2,11 +2,13 @@ import { PrismaClient } from "@prisma/client";
 import { APIResponse } from "../models/response";
 import { Transfer } from "../models/transfer";
 import bcrypt from "bcrypt"
+import { UsersTable } from "../repositories/user";
 import { Transaction } from "../models/transaction";
 
 
 class TransferService {
   private prisma = new PrismaClient()
+  private usersTable = UsersTable
 
   public async execute(transfer: Transfer): Promise<APIResponse> {
 
@@ -29,7 +31,6 @@ class TransferService {
     const b = transfer.newAgencyVerificationCode
     const c = transfer.newAccountNumber
     const d = transfer.newAccountVerificationCode
-    //console.log("This is the withdraw", withdraw)
 
     const account: any = await this.prisma.account.findFirst({
       where: {
@@ -48,11 +49,11 @@ class TransferService {
         accountVerificationCode: d
       }
     })
-    //console.log("Account", account)
-
+    console.log(secondAccount);
+    const targetUser = await new this.usersTable().findById(secondAccount.userId);
+    console.log(targetUser);
+    
     const passwordIsEqual = await bcrypt.compare(transfer.password, account.password)
-
-    //console.log("Result: ", passwordIsEqual)
     
     const value = Number(transfer.value)
     const fee = 1
@@ -68,8 +69,6 @@ class TransferService {
         where: { id: secondAccount.id },
         data: secondAccount,
       })
-
-      // console.log("Check ", check)
 
       const transaction: Transaction = {
         accountId: account.id,
@@ -95,7 +94,8 @@ class TransferService {
       newAgencyVerificationCode: secondAccount.agencyVerificationCode,
       newAccountNumber: secondAccount.accountNumber,
       newAccountVerificationCode: secondAccount.accountVerificationCode,
-      secondBalance: secondAccount.balance
+      secondBalance: secondAccount.balance,
+      nameTargetUser: targetUser?.name
     }
 
     return {

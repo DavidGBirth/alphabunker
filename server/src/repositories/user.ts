@@ -4,6 +4,12 @@ import { User } from "../models/user"
 class UsersTable {
   private prisma = newPrisma;
 
+  public async findById(id: string) {
+    return await this.prisma.user.findUnique({
+      where: { id: id }
+    })
+  }
+
   public async find(user: User) {
     return await this.prisma.user.findFirst({
       where: { cpf: user.cpf }

@@ -15,17 +15,46 @@ import { Modal } from '../../components/Modal';
 import { api } from '../../libs/api';
 import { useState } from 'react';
 import { useUser } from '../../providers/UserProvider';
+import { useNavigate } from 'react-router-dom';
 
 export const Transfer = () => {
-  const { account } = useUser();
+  const { account, setAccount } = useUser();
+  const [sendAgencyNumber, setSendAgencyNumber] = useState<string>();
+  const [sendAccountNumber, setSendAccountNumber] = useState<string>();
+  const [password, setPassword] = useState<string>();
+  const [value, setValue] = useState<string>();
   const [modal, setModal] = useState(false);
-  const formData = {};
+  const navigate = useNavigate();
 
   async function handleTransfer() {
+    const agency = sendAgencyNumber?.split('-');
+    const newAccount = sendAccountNumber?.split('-');
+    console.log(value, password, agency, account);
     try {
-      await api.post('transfer', {
-        account: { account },
-      });
+      if (agency && newAccount) {
+        const { data } = await api.post('/transfer', {
+          newAgencyNumber: Number(agency[0]),
+          newAgencyVerificationCode: Number(agency[1]),
+          newAccountNumber: Number(newAccount[0]),
+          newAccountVerificationCode: Number(newAccount[1]),
+          password,
+          value,
+          ...account
+        });
+        if (setAccount) {
+          setAccount({
+            accountNumber: data.data.accountNumber,
+            accountVerificationCode: data.data.accountVerificationCode,
+            agencyNumber: data.data.agencyNumber,
+            agencyVerificationCode: data.data.agencyVerificationCode,
+            balance: data.data.balance,
+          });
+        }
+        navigate(
+          `/transaction/Transferencia/${new Date()}/${value}/${data.data.balance}/${data.data.nameTargetUser}/${sendAgencyNumber}/${sendAccountNumber}`,
+        );
+      }
+
     } catch (error) {
       console.log(error);
     }
@@ -84,6 +113,8 @@ export const Transfer = () => {
               <input
                 className="h-8 w-20 rounded text-input-text bg-input-base pl-2"
                 type="text"
+                onBlur={(e) => setSendAgencyNumber(e.target.value)}
+
               />
               <span className="text-xs text-input-inactive">Agência</span>
             </div>
@@ -91,6 +122,7 @@ export const Transfer = () => {
               <input
                 className="h-8 w-24 rounded text-input-text bg-input-base pl-2"
                 type="text"
+                onBlur={(e) => setSendAccountNumber(e.target.value)}
               />
               <span className="text-xs text-input-inactive">Conta</span>
             </div>
@@ -102,14 +134,16 @@ export const Transfer = () => {
             className="w-full h-8 rounded text-input-text bg-input-base pl-2"
             type="text"
             placeholder="Valor"
+            onBlur={(e) => setValue(e.target.value)}
           />
         </div>
 
         <div className="my-4">
           <input
             className="w-full h-8 rounded text-input-text bg-input-base pl-2"
-            type="text"
+            type="password"
             placeholder="Senha"
+            onBlur={(e) => setPassword(e.target.value)}
           />
         </div>
 

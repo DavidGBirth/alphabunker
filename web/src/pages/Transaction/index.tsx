@@ -13,7 +13,7 @@ import { Header } from '../../components/Header';
  */
 
 export const Transaction = () => {
-  const { type, date, value, balance } =
+  const { type, date, value, balance, targetUser, agency, newAccount } =
     useParams<Record<string, string | undefined>>();
   // const [type, setType] = useState('');
   console.log({ type, date, value });
@@ -49,17 +49,17 @@ export const Transaction = () => {
             </div>
           </div>
           <div>
-            {type === 'tranfer' ? (
-              <>
+            {type === 'Transferencia' ? (
+              <div>
                 <p className="text-paragraph-light-100">Dados de destino:</p>
                 <div className="px-1">
                   <div className="flex flex-col">
-                    <p>Nome: Dhalsim Fonseca</p>
-                    <p>Agência: 1027-7</p>
-                    <p>Conta: 93459-2</p>
+                    <p>Nome: {targetUser}</p>
+                    <p>Agência: {agency}</p>
+                    <p>Conta: {newAccount}</p>
                   </div>
                 </div>
-              </>
+              </div>
             ) : null}
             <div className="flex flex-row justify-between pt-2">
               <p className="text-base text-paragraph-light-100">Valor</p>
