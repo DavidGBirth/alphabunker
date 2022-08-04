@@ -128,7 +128,7 @@ export const Withdraw = () => {
         <div className="my-4">
           <input
             className="w-full h-8 rounded text-input-text bg-input-base pl-2"
-            type="text"
+            type="password"
             placeholder="Senha"
             onBlur={(e) => setPassword(e.target.value)}
           />
