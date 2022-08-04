@@ -103,7 +103,10 @@ export const Router = () => (
         </Private>
       }
     />
-    <Route path="/transaction/:transactionId" element={<Transaction />} />
+    <Route
+      path="/transaction/:type/:date/:value/:balance"
+      element={<Transaction />}
+    />
 
     <Route path="*" element={<h1 className="text-white">Error 404</h1>} />
   </Routes>

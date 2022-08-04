@@ -11,7 +11,12 @@ import {
 } from 'phosphor-react';
 import { useEffect } from 'react';
 import { api } from '../libs/api';
-export const Header = () => {
+
+interface PropTypes {
+  balance: number;
+}
+
+export const Header = ({ balance }: PropTypes) => {
   const navigate = useNavigate();
   const { user, account } = useUser();
   /* const [numberAgency, numberAcount, value] = [
@@ -98,7 +103,7 @@ export const Header = () => {
         <div className="flex items-center gap-1">
           <Eye size={14} className="text-icon-dark-100 mt-1" />
           <p className="text-2xl text-brand-base font-bold">
-            {moneyTransform(account?.balance)}
+            {moneyTransform(balance)}
             <span className="text-sm text-brand-base font-bold ml-1">R$</span>
           </p>
         </div>

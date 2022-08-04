@@ -13,13 +13,15 @@ import { Header } from '../../components/Header';
  */
 
 export const Transaction = () => {
-  const { transactionId } = useParams<Record<string, string | undefined>>();
-  const [type, setType] = useState('');
-  console.log(transactionId);
+  const { type, date, value, balance } =
+    useParams<Record<string, string | undefined>>();
+  // const [type, setType] = useState('');
+  console.log({ type, date, value });
+  const dateFormated = new Date();
 
   return (
     <section className="flex flex-col items-center h-screen w-screen">
-      <Header />
+      <Header balance={Number(balance)} />
       <div className="w-72 h-[400] flex flex-col p-3 rounded dark:border-2 mt-3 border-btn-secondary-base bg-icon-light dark:bg-body-dark">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row text-header-gold text-base">
@@ -32,11 +34,18 @@ export const Transaction = () => {
 
         <div className="mt-7 text-paragraph-light-200 p-1 text-sm font-medium bg-body-light-100 dark:bg-body-dark">
           <div>
-            <p className="text-paragraph-light-100">
-              Tipo: Transferência - Enviada
-            </p>
+            <p className="text-paragraph-light-100">Tipo: {type}</p>
             <div className="py-2">
-              <p>Data: 03/07/2022 20:45</p>
+              <p>
+                Data:
+                {dateFormated.toLocaleString('default', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </p>
             </div>
           </div>
           <div>
@@ -54,7 +63,7 @@ export const Transaction = () => {
             ) : null}
             <div className="flex flex-row justify-between pt-2">
               <p className="text-base text-paragraph-light-100">Valor</p>
-              <p className="text-input-error text-center">- R$26,49</p>
+              <p className="text-input-error text-center">R$ {value}</p>
             </div>
           </div>
         </div>

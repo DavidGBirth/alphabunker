@@ -1,30 +1,29 @@
 /**
- * Archive: src/pages/Transfer.tsx
+ * Archive: src/pages/Withdraw.tsx
  *
- * Description: Transfer page
+ * Description: Withdraw page
  *
  * Date: 2022/08/02
  *
  * Author: Samuel
  */
 
-import { Header } from '../../components/Header';
-import { ArrowsLeftRight } from 'phosphor-react';
+import { DownloadSimple } from 'phosphor-react';
+import { useState } from 'react';
 import { Button } from '../../components/Button';
+import { Header } from '../../components/Header';
 import { Modal } from '../../components/Modal';
 import { api } from '../../libs/api';
-import { useState } from 'react';
-import { useUser } from '../../providers/UserProvider';
 
-export const Transfer = () => {
-  const { account } = useUser();
+export const Withdraw = () => {
   const [modal, setModal] = useState(false);
-  const formData = {};
 
-  async function handleTransfer() {
+  async function handleWithdraw() {
     try {
-      await api.post('transfer', {
-        account: { account },
+      await api.post('withdraw', {
+        agency: '',
+        account: '',
+        value: '',
       });
     } catch (error) {
       console.log(error);
@@ -35,23 +34,23 @@ export const Transfer = () => {
     <section className="flex flex-col items-center h-screen w-screen">
       {modal && (
         <Modal
-          title="Transferência"
+          title="Depósito"
           setModal={setModal}
-          handleConfirmModal={handleTransfer}
+          handleConfirmModal={handleWithdraw}
         />
       )}
-      <Header balance={account ? account.balance : 0} />
+      <Header />
       <div className="w-72 h-[400] flex flex-col px-3 py-3 rounded dark:border-2 mt-3 border-btn-secondary-base shadow-md">
         <div className="flex flex-row text-header-gold text-base">
           <div className="flex items-center">
-            <ArrowsLeftRight size={20} className="mr-2" />
+            <DownloadSimple size={20} className="mr-2" />
           </div>
-          <div className="font-medium">Transferência</div>
+          <div className="font-medium">Saque</div>
         </div>
 
         <div className="mt-4">
           <div className="text-paragraph-dark dark:text-header-light">
-            Origem
+            Dados para saque
           </div>
           <div className="flex flex-row mt-2">
             <div className="flex flex-col mr-7">
@@ -76,28 +75,6 @@ export const Transfer = () => {
         </div>
 
         <div className="mt-4">
-          <div className="text-paragraph-dark dark:text-header-light">
-            Destino
-          </div>
-          <div className="flex flex-row mt-2">
-            <div className="flex flex-col mr-7">
-              <input
-                className="h-8 w-20 rounded text-input-text bg-input-base pl-2"
-                type="text"
-              />
-              <span className="text-xs text-input-inactive">Agência</span>
-            </div>
-            <div className="flex flex-col">
-              <input
-                className="h-8 w-24 rounded text-input-text bg-input-base pl-2"
-                type="text"
-              />
-              <span className="text-xs text-input-inactive">Conta</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-4">
           <input
             className="w-full h-8 rounded text-input-text bg-input-base pl-2"
             type="text"
@@ -115,7 +92,7 @@ export const Transfer = () => {
 
         <Button
           category="primary"
-          label="Transferir"
+          label="Sacar"
           type="button"
           onClick={() => setModal(true)}
         />

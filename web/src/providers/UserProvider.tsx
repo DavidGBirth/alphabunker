@@ -1,17 +1,30 @@
-import { ReactNode, createContext, useState, useContext, useEffect } from 'react';
+import {
+  ReactNode,
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+} from 'react';
 import { api } from '../libs/api';
 
 interface ContextTypes {
   user: UserTypes;
   account: AccountTypes;
+  setAccount?: (account: AccountTypes) => void;
   loading: boolean;
-  signup?: (value: { name: string; email: string; cpf: string; birthdate: string; password: string }) => void;
+  signup?: (value: {
+    name: string;
+    email: string;
+    cpf: string;
+    birthdate: string;
+    password: string;
+  }) => void;
   logout?: () => void;
 }
 
 interface LoginTypes {
-  cpf: string
-  password: string
+  cpf: string;
+  password: string;
 }
 
 interface SignUpTypes {
@@ -47,13 +60,7 @@ interface UserProviderTypes {
 export const UserProvider = ({ children }: UserProviderTypes) => {
   const [user, setUser] = useState<UserTypes>();
   const [loading, setLoading] = useState(true);
-  const [account, setAccount] = useState<AccountTypes>({
-    accountNumber: 0,
-    accountVerificationCode: 0,
-    agencyNumber: 0,
-    agencyVerificationCode: 0,
-    balance: 0
-  });
+  const [account, setAccount] = useState<AccountTypes>();
 
   /* const login = ({ cpf, password }: LoginTypes) => {
 
@@ -63,19 +70,25 @@ export const UserProvider = ({ children }: UserProviderTypes) => {
 
   }; */
 
-  const signup = async ({name, email, cpf, birthdate, password}: SignUpTypes) => {
+  const signup = async ({
+    name,
+    email,
+    cpf,
+    birthdate,
+    password,
+  }: SignUpTypes) => {
     const body = {
       name,
       email: email,
       cpf: cpf,
       birthdate: birthdate,
-      password: password
+      password: password,
     };
     console.log(body);
     try {
       const response = await api.post('/accounts', body);
       if (response.data) {
-        setUser({name, email, cpf, birthdate, password});
+        setUser({ name, email, cpf, birthdate, password });
         //localStorage.setItem('user', JSON.stringify({name, email, cpf, birthdate, password}));
         setAccount(response.data.data);
       }
@@ -83,7 +96,6 @@ export const UserProvider = ({ children }: UserProviderTypes) => {
     } catch (error: any) {
       console.log(error.response.data);
     }
-
   };
 
   /* useEffect(() => {
@@ -101,7 +113,8 @@ export const UserProvider = ({ children }: UserProviderTypes) => {
         user,
         account,
         loading,
-        signup
+        signup,
+        setAccount,
       }}
     >
       {children}

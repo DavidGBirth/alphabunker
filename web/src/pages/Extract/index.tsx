@@ -45,13 +45,12 @@ export const Extract = () => {
         agencyNumber: account?.agencyNumber,
         agencyVerificationCode: account?.agencyVerificationCode,
         accountNumber: account?.accountNumber,
-        accountVerificationCode: account?.accountVerificationCode
+        accountVerificationCode: account?.accountVerificationCode,
       });
       console.log(data);
     } catch (error: any) {
       console.log(error.response.data);
     }
-
   }
 
   useEffect(() => {
@@ -60,7 +59,7 @@ export const Extract = () => {
 
   return (
     <section className="flex flex-col items-center h-screen w-screen">
-      <Header />
+      <Header balance={account ? account.balance : 0} />
       <div className="w-72 h-[400] flex flex-col px-3 py-3 rounded dark:border-2 mt-3 border-btn-secondary-base bg-icon-light dark:bg-body-dark">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row text-header-gold text-base">
