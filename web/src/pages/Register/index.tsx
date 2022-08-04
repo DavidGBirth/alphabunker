@@ -16,6 +16,7 @@ export const Register = () => {
   const [cpf, setCpf] = useState('01234567890');
   const [email, setEmail] = useState('david@gmail.com');
   const [password, setPassword] = useState('abcdef');
+  const [confirmPassword, setConfirmPassword] = useState('abcdef');
 
   const handleSubmit = async () => {
     if (signup) {
@@ -28,7 +29,25 @@ export const Register = () => {
       });
       navigate('/extract');
     }
+
+  const comparePassword = () => {
+    if (password === confirmPassword) {
+      return true;
+    } else {
+      return false;
+    }
   };
+
+  const handleSubmit = async () => {
+    if (comparePassword()) {
+      if (signup) {
+        signup({name: name, email: email, cpf: cpf, birthdate: birthdate, password: password});
+        navigate('/extract');
+      }
+    }
+  };
+
+
 
   return (
     <div className="bg-body-light-200 flex flex-col justify-center items-center w-screen h-screen gap-10">
