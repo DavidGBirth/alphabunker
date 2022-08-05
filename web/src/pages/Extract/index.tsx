@@ -53,28 +53,28 @@ export const Extract = () => {
       data.data.forEach((item) => {
         if (item.type === 'deposit') {
           if (deposit) {
-            const newDeposit = deposit + item.value + item.fee;
+            const newDeposit = deposit + item.value;
             setDeposit(newDeposit);
           } else {
-            const newDeposit = item.value + item.fee;
+            const newDeposit = item.value;
             setDeposit(newDeposit);
           }
         }
         if (item.type === 'withdraw') {
           if (withdraw) {
-            const newWithdraw = withdraw + item.value + item.fee;
+            const newWithdraw = withdraw + item.value;
             setWithdraw(newWithdraw);
           } else {
-            const newWithdraw = item.value + item.fee;
+            const newWithdraw = item.value;
             setWithdraw(newWithdraw);
           }
         }
         if (item.type === 'transfer') {
           if (transfer) {
-            const newTransfer = transfer + item.value + item.fee;
+            const newTransfer = transfer + item.value;
             setTransfer(newTransfer);
           } else {
-            const newTransfer = item.value + item.fee;
+            const newTransfer = item.value;
             setTransfer(newTransfer);
           }
         }

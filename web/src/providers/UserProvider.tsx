@@ -62,14 +62,6 @@ export const UserProvider = ({ children }: UserProviderTypes) => {
   const [loading, setLoading] = useState(true);
   const [account, setAccount] = useState<AccountTypes>();
 
-  /* const login = ({ cpf, password }: LoginTypes) => {
-
-  };
-
-  const logout = () => {
-
-  }; */
-
   const signup = async ({
     name,
     email,
@@ -84,7 +76,6 @@ export const UserProvider = ({ children }: UserProviderTypes) => {
       birthdate: birthdate,
       password: password,
     };
-    console.log(body);
     try {
       const response = await api.post('/accounts', body);
       if (response.data) {
@@ -92,7 +83,6 @@ export const UserProvider = ({ children }: UserProviderTypes) => {
         //localStorage.setItem('user', JSON.stringify({name, email, cpf, birthdate, password}));
         setAccount(response.data.data);
       }
-      // console.log(account);
     } catch (error: any) {
       console.log(error.response.data);
     }
